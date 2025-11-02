@@ -1,7 +1,5 @@
 // 
-
 import { useState } from "react";
-
 
 const customDictionary = {
   teh: "the",
@@ -18,19 +16,21 @@ const SpellCheck = () => {
     const text = e.target.value;
     setInputText(text);
 
-    // Split by spaces, trim empty entries
-    const words = text.trim().split(/\s+/).filter(Boolean).toLowerCase();
+    // Split input text into words (ignore extra spaces)
+    const words = text.trim().split(/\s+/).filter(Boolean);
 
     if (words.length === 0) {
       setSuggestion("");
       return;
     }
 
-    
-    const lastWord = words[words.length - 1].toLowerCase();
+    const wrongWord = words.find(
+      (word) => customDictionary[word.toLowerCase()]
+    );
 
-    if (customDictionary[lastWord]) {
-      setSuggestion(`Did you mean: ${customDictionary[lastWord]}?`);
+    if (wrongWord) {
+      const corrected = customDictionary[wrongWord.toLowerCase()];
+      setSuggestion(`Did you mean: ${corrected}?`);
     } else {
       setSuggestion("");
     }
@@ -48,7 +48,6 @@ const SpellCheck = () => {
         placeholder="Enter text..."
       />
 
-      {/* Display the suggestion exactly as tests expect */}
       {suggestion && <p>{suggestion}</p>}
     </div>
   );
