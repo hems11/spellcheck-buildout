@@ -15,14 +15,22 @@ const SpellCheck = () => {
     const text = e.target.value;
     const words = text.split(" ");
 
-    const correctedWords = words.map((word) => customDictionary[word.toLowerCase()] || word);
-    const firstWrong = words.find((word, i) => correctedWords[i] !== word && word.trim() !== "")
-
-    setInputText(text);
-    setSuggestion(
-        firstWrong ? `${firstWrong} -> ${customDictionary[firstWrong.toLowerCase()]}` : ""
+    const correctedWords = words.map(
+      (word) => customDictionary[word.toLowerCase()] || word
     );
 
+     const firstWrong = words.find(
+      (word, i) => correctedWords[i] !== word && word.trim() !== ""
+    );
+
+    if (firstWrong) {
+      const corrected = customDictionary[firstWrong.toLowerCase()];
+      setSuggestion(corrected);
+    } else {
+      setSuggestion("");
+    }
+
+    setInputText(text);
    }
 
     return (
@@ -37,7 +45,7 @@ const SpellCheck = () => {
             />
 
             {suggestion && (
-                <p> Did you mean: <strong>{suggestion}</strong></p>
+                <p>Did you mean: <strong>{suggestion}?</strong></p>
             )}
         </div>
     )
