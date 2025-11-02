@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+// 
 
-// Dictionary of wrong → correct words
+import { useState } from "react";
+
+
 const customDictionary = {
   teh: "the",
   wrok: "work",
@@ -14,26 +16,24 @@ const SpellCheck = () => {
 
   const handleInputChange = (e) => {
     const text = e.target.value;
-    const words = text.split(" ");
+    setInputText(text);
 
-    // Case-insensitive correction check
-    const correctedWords = words.map(
-      (word) => customDictionary[word.toLowerCase()] || word
-    );
+    // Split by spaces, trim empty entries
+    const words = text.trim().split(/\s+/).filter(Boolean);
 
-    // Find first incorrect word
-    const firstWrong = words.find(
-      (word, i) => correctedWords[i] !== word && word.trim() !== ""
-    );
+    if (words.length === 0) {
+      setSuggestion("");
+      return;
+    }
 
-    if (firstWrong) {
-      const corrected = customDictionary[firstWrong.toLowerCase()];
-      setSuggestion(`Did you mean: ${corrected}?`);
+    
+    const lastWord = words[words.length - 1].toLowerCase();
+
+    if (customDictionary[lastWord]) {
+      setSuggestion(`Did you mean: ${customDictionary[lastWord]}?`);
     } else {
       setSuggestion("");
     }
-
-    setInputText(text);
   };
 
   return (
