@@ -19,7 +19,7 @@ const SpellCheck = () => {
     setInputText(text);
 
     // Split by spaces, trim empty entries
-    const words = text.trim().split(/\s+/).filter(Boolean);
+    const words = text.trim().split(/\s+/).filter(Boolean).toLowerCase();
 
     if (words.length === 0) {
       setSuggestion("");
